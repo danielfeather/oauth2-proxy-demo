@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx
+spec:
+  entryPoints:
+  - http
+  routes:
+  - match: Host(`nginx.lancastrian.dev`)
+    kind: Rule
+    priority: 1
+    middlewares:
+    - name: oauth-errors
+    - name: oauth-auth-redirect
+    services:
+    - name: nginx
+      port: 80

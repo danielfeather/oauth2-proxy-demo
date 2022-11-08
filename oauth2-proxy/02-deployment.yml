@@ -1,0 +1,57 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: oauth2-proxy
+  labels:
+    app: oauth2-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy
+    spec:
+      containers:
+      - name: oauth2-proxy
+        image: quay.io/oauth2-proxy/oauth2-proxy:v7.4.0
+        args:
+        - --config=/etc/oauth2proxy/config
+        ports:
+        - name: web
+          containerPort: 4180
+        volumeMounts:
+        - name: oauth2-proxy-config
+          mountPath: /etc/oauth2proxy
+          readOnly: true
+        env:
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          valueFrom:
+              secretKeyRef:
+                  name: oauth2-proxy-cookie-secret
+                  key: secret
+                  optional: false
+        - name: OAUTH2_PROXY_CLIENT_ID
+          valueFrom:
+              secretKeyRef:
+                name: microsoft-azure-ad-credentials
+                key: clientId
+                optional: false
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+              secretKeyRef:
+                name: microsoft-azure-ad-credentials
+                key: clientSecret
+                optional: false
+        - name: OAUTH2_PROXY_OIDC_ISSUER_URL
+          valueFrom:
+              secretKeyRef:
+                name: microsoft-azure-ad-credentials
+                key: issuerUrl
+                optional: false
+      volumes:
+      - name: oauth2-proxy-config
+        configMap:
+          name: oauth2-proxy

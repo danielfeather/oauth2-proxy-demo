@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+    name: oauth2-proxy
+spec:
+    entryPoints:
+    - http
+    routes:
+    - match: Host(`k8sauth.lancastrian.dev`, `nginx.lancastrian.dev`, `whoami.lancastrian.dev`) && PathPrefix(`/oauth2`)
+      kind: Rule
+      priority: 1
+      middlewares:
+      - name: auth-headers
+      services:
+      - name: oauth2-proxy
+        port: 4180
