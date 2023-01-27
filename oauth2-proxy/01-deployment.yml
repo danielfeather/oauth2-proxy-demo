@@ -16,16 +16,12 @@ spec:
     spec:
       containers:
       - name: oauth2-proxy
-        image: quay.io/oauth2-proxy/oauth2-proxy:v7.4.0
+        image: 143364350185.dkr.ecr.eu-west-2.amazonaws.com/danielfeather/oauth2-proxy:latest
         args:
-        - --config=/etc/oauth2proxy/config
+        - --config=/etc/oauth2proxy/oauth2-proxy-config
         ports:
         - name: web
           containerPort: 4180
-        volumeMounts:
-        - name: oauth2-proxy-config
-          mountPath: /etc/oauth2proxy
-          readOnly: true
         env:
         - name: OAUTH2_PROXY_COOKIE_SECRET
           valueFrom:

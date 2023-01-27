@@ -3,12 +3,16 @@ kind: IngressRoute
 metadata:
     name: oauth2-proxy
 spec:
+    tls:
+      certResolver: letsencrypt
+      domains:
+      - main: staging.lancastrian.dev
     entryPoints:
-    - http
+    - websecure
     routes:
-    - match: Host(`k8sauth.lancastrian.dev`, `nginx.lancastrian.dev`, `whoami.lancastrian.dev`) && PathPrefix(`/oauth2`)
+    - match: Host(`staging.lancastrian.dev`)
       kind: Rule
-      priority: 1
+      priority: 10
       middlewares:
       - name: auth-headers
       services:

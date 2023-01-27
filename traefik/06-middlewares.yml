@@ -18,7 +18,7 @@ metadata:
     name: oauth-auth-redirect
 spec:
     forwardAuth:
-        address: https://nginx.lancastrian.dev/oauth2/auth
+        address: https://staging.lancastrian.dev/oauth2/auth
         trustForwardHeader: true
         authResponseHeaders:
         - X-Auth-Request-Access-Token

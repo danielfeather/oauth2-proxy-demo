@@ -3,15 +3,16 @@ kind: IngressRoute
 metadata:
   name: nginx
 spec:
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: nginx.lancastrian.dev
   entryPoints:
-  - http
+  - websecure
   routes:
-  - match: Host(`nginx.lancastrian.dev`)
+  - match: Host(`92.27.105.71`,`192.168.1.20`,`nginx.lancastrian.dev`)
     kind: Rule
     priority: 1
-    middlewares:
-    - name: oauth-errors
-    - name: oauth-auth-redirect
     services:
     - name: nginx
       port: 80
