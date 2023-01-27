@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traintimes
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: traintimes
+  template:
+    metadata:
+      labels:
+        app: traintimes
+    spec:
+      containers:
+        - name: traintimes
+          image: 143364350185.dkr.ecr.eu-west-2.amazonaws.com/danielfeather/traintimes:latest
+          imagePullPolicy: Always
+          ports:
+            - name: web
+              containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: NODE_ENV
+              value: "production"
+            - name: TRANSPORT_API_APPID
+              valueFrom:
+                secretKeyRef:
+                  name: transport-api-credentials
+                  key: appId
+            - name: TRANSPORT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: transport-api-credentials
+                  key: apiKey

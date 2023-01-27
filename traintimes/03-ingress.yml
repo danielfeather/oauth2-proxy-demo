@@ -1,0 +1,21 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traintimes
+spec:
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: trains.lancastrian.dev
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`trains.lancastrian.dev`)
+      kind: Rule
+      priority: 1
+      middlewares:
+      - name: oauth-errors
+      - name: oauth-auth-redirect
+      services:
+      - name: traintimes
+        port: 3000

@@ -1,0 +1,21 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx
+spec:
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: traefik.lancastrian.dev
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik.lancastrian.dev`)
+      kind: Rule
+      priority: 1
+      middlewares:
+      - name: oauth-errors
+      - name: oauth-auth-redirect
+      services:
+        - name: api@internal
+          kind: TraefikService
