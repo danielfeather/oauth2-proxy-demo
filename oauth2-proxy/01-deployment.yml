@@ -47,7 +47,3 @@ spec:
                 name: microsoft-azure-ad-credentials
                 key: issuerUrl
                 optional: false
-      volumes:
-      - name: oauth2-proxy-config
-        configMap:
-          name: oauth2-proxy
